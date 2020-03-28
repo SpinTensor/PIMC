@@ -1,0 +1,3 @@
+[submodule "external/MersenneTwister_C"]
+	path = external/MersenneTwister_C
+	url = git@github.com:SpinTensor/MersenneTwister_C.git
