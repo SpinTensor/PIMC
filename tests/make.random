@@ -1,0 +1,32 @@
+runtest_random: runtest_random_int \
+                runtest_random_uniform \
+                runtest_random_gaussian \
+                
+buildtest_random: test_random_int.x \
+                  test_random_uniform.x \
+                  test_random_gaussian.x
+
+runtest_random_int: test_random_int.x
+	@(./test_random_int.x)
+runtest_random_uniform: test_random_uniform.x
+	@(./test_random_uniform.x)
+runtest_random_gaussian: test_random_gaussian.x
+	@(./test_random_gaussian.x)
+
+test_random_int.x: test_random_int.o
+	$(CC) $(CCFLAGS) $(CCWFLAGS) -o $@ $^ $(LIBS)
+test_random_int.o: test_random_int.c ../src/libpimc.a
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+test_random_uniform.x: test_random_uniform.o
+	$(CC) $(CCFLAGS) $(CCWFLAGS) -o $@ $^ $(LIBS)
+test_random_uniform.o: test_random_uniform.c ../src/libpimc.a
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+test_random_gaussian.x: test_random_gaussian.o
+	$(CC) $(CCFLAGS) $(CCWFLAGS) -o $@ $^ $(LIBS)
+test_random_gaussian.o: test_random_gaussian.c ../src/libpimc.a
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+
+
