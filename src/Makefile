@@ -7,8 +7,37 @@ OUTLIB = libpimc.a
 
 all: $(OUTLIB)
 
-$(OUTLIB): MersenneTwister/MT_random.o
+$(OUTLIB): MersenneTwister/MT_random.o periodic.o monte_carlo.o energy.o \
+    mp_constants.o path_construct.o permtables.o \
+    periodic_table.c
 	ar rvcs $@ $^
+
+periodic.o: periodic.c periodic.h
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+monte_carlo.o: monte_carlo.c mc_types.h periodic.h permtables.h
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+energy.o: energy.c
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+mp_constants.o: mp_constants.c
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+mp_constants.c: generate_mp_constants.x
+	./$< > $@
+
+generate_mp_constants.x: generate_mp_constants.c
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -o $@ $^
+
+path_construct.o: path_construct.c MersenneTwister/MT_random.h periodic.h
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+permtables.o: permtables.c
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
+
+periodic_table.o: periodic_table.c
+	$(CC) $(CCFLAGS) $(CCWFLAGS) $(INCLUDE) -c $<
 
 # Build the Mersenne Twister Submodule
 MersenneTwister/MT_random.o: MersenneTwister/Make.include \
